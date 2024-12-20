@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HRMIS 2.0</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Custom Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E40AF',
+            secondary: '#1E3A8A',
+            accent: '#3B82F6',
+            light: '#F3F4F6',
+            dark: '#111827',
+            gradientStart: '#4F46E5',
+            gradientEnd: '#3B82F6',
+          },
+          fontFamily: {
+            sans: ['Poppins', 'Roboto', 'sans-serif'],
+          },
+          boxShadow: {
+            '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
+            'custom': '0 10px 25px rgba(0, 0, 0, 0.1)',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            pulseSlow: {
+              '0%, 100%': { opacity: '1' },
+              '50%': { opacity: '0.5' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+          },
+          animation: {
+            fadeInUp: 'fadeInUp 0.6s ease-out forwards',
+            pulseSlow: 'pulseSlow 3s infinite',
+            fadeIn: 'fadeIn 1s ease-out forwards',
+          },
+        },
+      },
+      darkMode: 'class',
+    }
+  </script>
+  <style>
+    /* Custom Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fadeInUp {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    /* Toggle Switch */
+    .toggle-checkbox:checked + .toggle-label {
+      @apply translate-x-full bg-primary;
+    }
+
+    .toggle-checkbox:focus + .toggle-label {
+      @apply ring-2 ring-primary;
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: 140px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 10;
+      bottom: 125%; /* Position above the element */
+      left: 50%;
+      margin-left: -70px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 50;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .modal-close {
+      float: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 640px) {
+      .modal-content {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body class="bg-light dark:bg-gray-900 transition-colors duration-500 flex flex-col items-center justify-center min-h-screen font-sans">
+  <div class="bg-white dark:bg-gray-800 max-w-5xl w-full rounded-3xl shadow-3xl p-10 transform transition duration-300 hover:shadow-4xl hover:-translate-y-2 animate-fadeInUp">
+    <!-- Dark Mode Toggle -->
+    <div class="flex justify-end mb-4">
+      <label for="toggleB" class="flex items-center cursor-pointer">
+        <!-- toggle -->
+        <div class="relative">
+          <input id="toggleB" type="checkbox" class="sr-only toggle-checkbox" onclick="document.documentElement.classList.toggle('dark')">
+          <div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+          <div class="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition"></div>
+        </div>
+        <!-- label -->
+        <div class="ml-3 text-gray-700 dark:text-gray-300 font-medium">
+          Dark Mode
+        </div>
+      </label>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="flex flex-col md:flex-row justify-between items-center mb-8">
+      <div class="flex space-x-4 mb-4 md:mb-0">
+        <img src="https://storage.googleapis.com/a1aa/image/nLkkFujzHe2QLqKGmvbuBoGLLD4mXuTvDwhgk063CN7IJWeTA.jpg" alt="Government Logo" class="w-20 h-20 object-contain shadow-md rounded-lg transform transition-transform hover:scale-105">
+        <img src="https://storage.googleapis.com/a1aa/image/9COLxdsfczVbKq5b8HdaALuL3bHKOJ08UvtNUrQbWbqJJWeTA.jpg" alt="HRMIS Logo" class="w-20 h-20 object-contain shadow-md rounded-lg transform transition-transform hover:scale-105">
+      </div>
+      <div class="flex space-x-6">
+        <a href="#" class="flex items-center text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors text-lg font-semibold">
+          <i class="fas fa-home mr-2"></i> Beranda
+        </a>
+        <div class="relative group">
+          <button class="flex items-center text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors text-lg font-semibold focus:outline-none">
+            <i class="fas fa-info-circle mr-2"></i> Tentang
+            <i class="fas fa-chevron-down ml-2"></i>
+          </button>
+          <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Fitur</a>
+            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Kontak</a>
+            <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">Karier</a>
+          </div>
+        </div>
+        <a href="#" class="flex items-center text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors text-lg font-semibold">
+          <i class="fas fa-envelope mr-2"></i> Hubungi
+        </a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-5xl font-bold text-dark dark:text-white mb-4 animate-fadeIn">Selamat Datang ke HRMIS 2.0</h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 mb-6 animate-fadeIn delay-200">SISTEM PENGURUSAN MAKLUMAT SUMBER MANUSIA yang lebih pintar dan efisien.</p>
+      <button onclick="openModal()" class="bg-primary text-white py-3 px-6 rounded-lg shadow-lg hover:bg-secondary dark:hover:bg-accent transition-transform transform hover:-translate-y-1 flex items-center justify-center">
+        <i class="fas fa-info-circle mr-2"></i> Ketahui Lebih Lanjut
+      </button>
+    </div>
+
+    <!-- Form and Announcement Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- Login Form -->
+      <div class="space-y-8">
+        <h3 class="text-3xl font-semibold text-dark dark:text-white">Log Masuk Pengguna</h3>
+        <form id="loginForm" class="space-y-6">
+          <div class="relative">
+            <label for="id-pengguna" class="block text-gray-700 dark:text-gray-300 mb-2">ID PENGGUNA</label>
+            <input id="id-pengguna" type="text" placeholder="ID Pengguna" required class="w-full px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary transition duration-200">
+            <i class="fas fa-user absolute right-4 top-10 text-gray-400 dark:text-gray-500"></i>
+          </div>
+          <div class="relative">
+            <label for="kata-laluan" class="block text-gray-700 dark:text-gray-300 mb-2">KATA LALUAN</label>
+            <input id="kata-laluan" type="password" placeholder="Kata Laluan" required class="w-full px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary transition duration-200">
+            <i class="fas fa-lock absolute right-4 top-10 text-gray-400 dark:text-gray-500"></i>
+          </div>
+          <div class="flex justify-between items-center">
+            <button type="submit" class="flex items-center justify-center bg-primary text-white py-3 px-6 rounded-lg shadow-lg hover:bg-secondary dark:hover:bg-accent transition-transform transform hover:-translate-y-1">
+              <i class="fas fa-paper-plane mr-2"></i> Hantar
+            </button>
+            <button type="reset" class="flex items-center justify-center bg-gray-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-gray-700 dark:hover:bg-gray-500 transition-transform transform hover:-translate-y-1">
+              <i class="fas fa-redo mr-2"></i> Set Semula
+            </button>
+          </div>
+        </form>
+        <p class="text-center text-gray-600 dark:text-gray-400 text-sm">
+          Klik <a href="#" class="text-primary dark:text-accent hover:underline">Lupa Kata Laluan</a> untuk set semula kata laluan.<br/>
+          Klik <a href="#" class="text-primary dark:text-accent hover:underline">Sistem Pengurusan Meja Bantuan (SPMB)</a> untuk hubungi meja bantuan HRMIS.
+        </p>
+      </div>
+
+      <!-- Announcement Section -->
+      <div class="space-y-6">
+        <h3 class="text-3xl font-semibold text-dark dark:text-white">Pengumuman</h3>
+        <div class="bg-gradient-to-r from-gradientStart to-gradientEnd text-white p-6 rounded-xl shadow-custom transform transition hover:scale-105">
+          <div class="flex items-center mb-4">
+            <i class="fas fa-bullhorn fa-2x mr-4 animate-pulseSlow"></i>
+            <h4 class="text-2xl font-medium">Penting!</h4>
+          </div>
+          <p class="text-lg">
+            PEMILIK KOMPETENSI DIMOHON UNTUK MEMBUAT PENGEMASKINIAN MAKLUMAT E-MEL DI HRMIS BAGI TUJUAN INTEGRITI DATA.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-12 text-center text-gray-500 dark:text-gray-400 text-sm space-y-3">
+      <p>Hakcipta terpelihara Jabatan Perkhidmatan Awam Malaysia © 2024.</p>
+      <p>
+        <a href="#" class="text-primary dark:text-accent hover:underline">
+          Klik sini untuk merujuk keperluan minima versi pelayar dan sistem pengoperasian HRMIS 2.0 dan myHRMIS
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="infoModal" class="modal flex">
+    <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 relative">
+      <span class="modal-close text-gray-500 dark:text-gray-300 absolute top-4 right-4 text-2xl cursor-pointer hover:text-gray-700 dark:hover:text-white">&times;</span>
+      <h2 class="text-2xl font-semibold text-dark dark:text-white mb-4">Tentang HRMIS 2.0</h2>
+      <p class="text-gray-700 dark:text-gray-300">
+        HRMIS 2.0 adalah sistem pengurusan maklumat sumber manusia yang direka untuk meningkatkan efisiensi dan integriti data. Sistem ini menawarkan pelbagai fitur seperti pengurusan data karyawan, laporan analitik, dan banyak lagi.
+      </p>
+    </div>
+  </div>
+
+  <!-- Tooltip Example -->
+  <div class="fixed bottom-4 right-4 tooltip">
+    <button class="bg-primary text-white p-4 rounded-full shadow-lg hover:bg-secondary transition">
+      <i class="fas fa-question-circle fa-2x"></i>
+    </button>
+    <span class="tooltip-text">Butuh Bantuan? Hubungi Kami!</span>
+  </div>
+
+  <!-- Optional: Include JavaScript for enhanced interactivity -->
+  <script>
+    // Dark mode toggle persistence
+    const toggle = document.getElementById('toggleB');
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+      toggle.checked = true;
+    }
+
+    toggle.addEventListener('change', () => {
+      if (toggle.checked) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // Modal functionality
+    const modal = document.getElementById('infoModal');
+    const openModal = () => {
+      modal.style.display = 'flex';
+    };
+    const closeModal = () => {
+      modal.style.display = 'none';
+    };
+    document.querySelector('.modal-close').addEventListener('click', closeModal);
+    window.addEventListener('click', (e) => {
+      if (e.target == modal) {
+        closeModal();
+      }
+    });
+
+    // Form Validation
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const userId = document.getElementById('id-pengguna').value;
+      const password = document.getElementById('kata-laluan').value;
+      if(userId && password){
+        // Implement actual authentication logic here
+        alert('Login Berjaya!');
+      } else {
+        alert('Sila isi semua medan.');
+      }
+    });
+  </script>
+</body>
+</html>
